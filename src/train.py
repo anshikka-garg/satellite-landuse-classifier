@@ -67,7 +67,6 @@ def evaluate(model, dataloader, criterion, device):
 
 def run_training(model, train_loader, val_loader, criterion, optimizer,
                   device, num_epochs, checkpoint_path=None, verbose=True):
-
     history = {"train_loss": [], "val_loss": [], "train_acc": [], "val_acc": []}
     best_val_acc = 0.0
 

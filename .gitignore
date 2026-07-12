@@ -1,8 +1,26 @@
 data/raw/
 data/processed/
+# Ignore all checkpoints
 models/*.pt
 models/*.pth
+
+# Keep final production model
+!models/resnet18_block_final.pt
+
+# Keep documentation
+!models/README.md
 src/__pycache__/
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
+
+# Reports build artifacts only (NOT the actual output plots/PDF)
+reports/*.aux
+reports/*.log
+
+# OS / editor
+.DS_Store
+.vscode/
+
+# Env
+.env

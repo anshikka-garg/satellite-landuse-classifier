@@ -8,6 +8,8 @@ from torchvision.datasets import EuroSAT
 from collections import defaultdict
 import numpy as np
 from torch.utils.data import Dataset
+import os
+from PIL import Image
 
 EUROSAT_CLASSES = [
     "AnnualCrop", "Forest", "HerbaceousVegetation", "Highway", "Industrial",
@@ -98,6 +100,42 @@ class IndexSubsetDataset(Dataset):
 
     def __getitem__(self, i):
         img, label = self.base[self.indices[i]]
+        if self.transform:
+            img = self.transform(img)
+        return img, label
+
+
+class UCMercedMappedDataset(Dataset):
+    """
+    Loads UC Merced images and maps their 21 categories to EuroSAT's 10 categories
+    using the UCM_TO_EUROSAT mapping dictionary. Filters out classes not in the dictionary.
+    """
+
+    def __init__(self, root_dir, transform=None):
+        self.root_dir = root_dir
+        self.transform = transform
+        self.samples = []
+
+        for class_name in os.listdir(root_dir):
+            class_dir = os.path.join(root_dir, class_name)
+            if not os.path.isdir(class_dir):
+                continue
+
+            if class_name in UCM_TO_EUROSAT:
+                eurosat_class = UCM_TO_EUROSAT[class_name]
+                label_idx = EUROSAT_CLASSES.index(eurosat_class)
+
+                for fname in os.listdir(class_dir):
+                    if fname.lower().endswith((".png", ".jpg", ".jpeg", ".tif", ".tiff")):
+                        fpath = os.path.join(class_dir, fname)
+                        self.samples.append((fpath, label_idx))
+
+    def __len__(self):
+        return len(self.samples)
+
+    def __getitem__(self, idx):
+        fpath, label = self.samples[idx]
+        img = Image.open(fpath).convert("RGB")
         if self.transform:
             img = self.transform(img)
         return img, label

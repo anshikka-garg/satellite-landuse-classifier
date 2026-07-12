@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import torchvision.models as models
 
 
 class BaselineCNN(nn.Module):
@@ -41,8 +42,6 @@ class BaselineCNN(nn.Module):
         x = self.conv3(x)
         x = self.classifier(x)
         return x
-    
-    import torchvision.models as models
 
 
 class TransferLearningModel(nn.Module):

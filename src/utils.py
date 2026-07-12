@@ -113,6 +113,6 @@ def plot_confusion(y_true, y_pred, class_names, title="Confusion matrix", normal
 def compute_f1_report(y_true, y_pred, class_names):
     per_class = f1_score(y_true, y_pred, average=None, labels=range(len(class_names)))
     macro = f1_score(y_true, y_pred, average="macro")
-    report = classification_report(y_true, y_pred, target_names=class_names, digits=3, zero_division=0)
+    report = classification_report(y_true, y_pred, labels=range(len(class_names)), target_names=class_names, digits=3, zero_division=0)
     per_class_dict = {c: float(f) for c, f in zip(class_names, per_class)}
     return per_class_dict, float(macro), report
