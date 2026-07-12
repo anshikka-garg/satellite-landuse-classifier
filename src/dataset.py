@@ -38,6 +38,7 @@ class MockEuroSATDataset:
         self.images = data["images"]
         self.labels = data["labels"]
         self.indices = data["indices"]
+        self.all_labels = data["all_labels"] if "all_labels" in data else None
         self.idx_map = {idx: (img, lbl) for idx, img, lbl in zip(self.indices, self.images, self.labels)}
         self.classes = [
             "AnnualCrop", "Forest", "HerbaceousVegetation", "Highway", "Industrial",
@@ -52,6 +53,9 @@ class MockEuroSATDataset:
             img_arr, label = self.idx_map[idx]
             from PIL import Image
             return Image.fromarray(img_arr), int(label)
+        elif self.all_labels is not None and 0 <= idx < len(self.all_labels):
+            # Return None for the image since it's not cached, but provide the correct class label
+            return None, int(self.all_labels[idx])
         else:
             raise KeyError(f"Index {idx} is not in the cached demo dataset. Full EuroSAT is not loaded in this environment.")
 

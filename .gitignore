@@ -6,6 +6,7 @@ models/*.pth
 
 # Keep final production model
 !models/resnet18_block_final.pt
+!models/resnet18_naive_final.pt
 
 # Keep documentation
 !models/README.md
