@@ -1,5 +1,5 @@
 data/raw/
-data/processed/
+
 # Ignore all checkpoints
 models/*.pt
 models/*.pth
