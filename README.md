@@ -19,3 +19,9 @@ The system features:
 4. **Interactive Dashboard:** Built with Streamlit, enabling users to perform single-tile inspection, analyze regional grids, and toggle confidence thresholds dynamically.
 
 *Developed as a capstone project for the **Celebal Technologies Data Science Internship** (Celebal Excellence Internship Program, May–July 2026).*
+
+## Demo Video
+📹 [Download & watch the 3-minute dashboard walkthrough](demo/demo_video.mp4)
+
+
+
