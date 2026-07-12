@@ -31,9 +31,45 @@ UCM_TO_EUROSAT = {
 }
 
 
-def load_eurasat(root: str, download: bool = True):
-    ds = EuroSAT(root=root, download=download, transform=None)
-    return ds
+class MockEuroSATDataset:
+    def __init__(self, npz_path):
+        import numpy as np
+        data = np.load(npz_path)
+        self.images = data["images"]
+        self.labels = data["labels"]
+        self.indices = data["indices"]
+        self.idx_map = {idx: (img, lbl) for idx, img, lbl in zip(self.indices, self.images, self.labels)}
+        self.classes = [
+            "AnnualCrop", "Forest", "HerbaceousVegetation", "Highway", "Industrial",
+            "Pasture", "PermanentCrop", "Residential", "River", "SeaLake",
+        ]
+
+    def __len__(self):
+        return 27000
+
+    def __getitem__(self, idx):
+        if idx in self.idx_map:
+            img_arr, label = self.idx_map[idx]
+            from PIL import Image
+            return Image.fromarray(img_arr), int(label)
+        else:
+            raise KeyError(f"Index {idx} is not in the cached demo dataset. Full EuroSAT is not loaded in this environment.")
+
+
+def load_eurasat(root: str, download: bool = False):
+    try:
+        ds = EuroSAT(root=root, download=download, transform=None)
+        return ds
+    except Exception as e:
+        # Fallback to the cached demo samples npz file
+        npz_path = os.path.join(os.path.dirname(root), "processed", "demo_samples.npz")
+        if os.path.exists(npz_path):
+            import logging
+            logging.getLogger("EarthObservationAI").warning(
+                f"EuroSAT dataset not found at {root}. Falling back to cached demo samples from {npz_path}."
+            )
+            return MockEuroSATDataset(npz_path)
+        raise e
 
 
 def naive_random_split(n_samples: int, splits=(0.7, 0.15, 0.15), seed: int = 42):
