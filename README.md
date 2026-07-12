@@ -2,7 +2,7 @@
 
 🚀 **Live Demo**
 🌐 Try the application here:
-[Streamlit App Link](https://satellite-landuse-classifier.streamlit.app/) *(Link to be updated)*
+[satellite-landuse-classifier.streamlit.app](https://satellite-landuse-classifier-c3lbbqs9eqvl8z8bm4ddw2.streamlit.app/)
 
 Experience the Satellite Land-Use Classifier and Temporal Change Detector without any local setup. Upload satellite image tiles, perform single-tile analysis with Grad-CAM explainability, and run regional change mapping in real-time.
 
